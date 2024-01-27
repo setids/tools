@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+:root {
+  --background: #ecf0f4;
+  --white: white;
+  --gray-light: #fafbfc;
+  --gray-borders: #ecf1f4;
+  --gray-dark: #aeb7c2;
+  --primary: #4d78c9;
+  --convert: #13aa52;
+  --copy-hover: #16437e;
+  --convert-hover: #0e8540;
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  height: 100dvh;
+  width: 100dvw;
+  background-color: var(--background);
+}
+
+.container {
+  background-color: var(--white);
+  border-radius: 8px;
+  margin: 16px;
+  width: 100%;
+  min-width: 280px;
+  max-width: 480px;
+}
+
+.header {
+  background-color: var(--gray-light);
+  border-bottom: var(--gray-borders);
+  display: flex;
+  gap: 8px;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  padding: 16px;
+  width: 100%;
+}
+
+.header textarea {
+  font-family: "Inter", sans-serif;
+  border: 1px solid var(--gray-borders);
+  padding: 8px;
+  border-radius: 4px;
+  height: 180px;
+  transition: height 0.3s ease-in-out;
+  resize: none;
+  width: 100%;
+}
+
+.header textarea:focus {
+  outline: none;
+  /* height: 180px; */
+  border: 1px solid var(--primary);
+}
+
+.buttonArea {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 10px;
+  /* padding: 4px; */
+}
+
+.buttonArea button {
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.btnCopy {
+  background-color: var(--primary);
+  color: var(--white);
+  min-width: 80px;
+}
+
+.btnCopy:hover {
+  background-color: var(--copy-hover);
+  color: var(--white);
+}
+
+.btnConvert {
+  background-color: var(--convert);
+  color: var(--white);
+  min-width: 80px;
+}
+
+.btnConvert:hover {
+  background-color: var(--convert-hover);
+  color: var(--white);
+}
