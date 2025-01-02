@@ -10,6 +10,8 @@
   --convert: #13aa52;
   --copy-hover: #16437e;
   --convert-hover: #0e8540;
+  --html: #f16529;
+  --html-hover: #d65424;
 }
 
 * {
@@ -100,5 +102,16 @@ body {
 
 .btnConvert:hover {
   background-color: var(--convert-hover);
+  color: var(--white);
+}
+
+.btnHtml {
+  background-color: var(--html);
+  color: var(--white);
+  min-width: 80px;
+}
+
+.btnHtml:hover {
+  background-color: var(--html-hover);
   color: var(--white);
 }

@@ -47,6 +47,28 @@ function removeLeadingAndTrailingNumbering(str) {
     .replace(/\d+\.$/, ""); // Menghapus angka diikuti titik di akhir baris
 }
 
+function convertToHTML() {
+  if (textInput.value.trim() !== "") {
+    let originalText = textInput.value;
+
+    // Pecah teks berdasarkan baris kosong untuk membentuk paragraf
+    let paragraphs = originalText.split(/\n\s*\n/);
+
+    // Format setiap paragraf sebagai tag <p> dengan jarak dan indentasi
+    let htmlResult = paragraphs
+      .map((paragraph) => {
+        let lines = paragraph
+          .split("\n")
+          .map((line) => `  ${line.trim()} <br>`)
+          .join("\n");
+        return `<p>\n${lines.trimEnd()}\n</p>`;
+      })
+      .join("\n\n");
+
+    textInput.value = htmlResult; // Tampilkan hasil HTML di textarea
+  }
+}
+
 function copyText() {
   textInput.select();
   document.execCommand("copy");
