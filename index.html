@@ -1,105 +1,286 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Jam</title>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.js"
-      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
-    ></script>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksi Tools Saya</title>
     <style>
-      #clock {
-        position: relative;
-        width: 400px;
-        height: 400px;
-        margin: 50px auto;
-        font-size: 24px;
-        border: solid;
-      }
-      .hour-line,
-      .minute-line,
-      .second-line {
-        position: absolute;
-        transform-origin: 50% 100%;
-        padding-bottom: 15%;
-        left: 50%;
-      }
-      .hour-line {
-        width: 6px;
-        height: 60px;
-        top: 90px;
-      }
-      .minute-line {
-        width: 4px;
-        height: 80px;
-        top: 40px;
-      }
-      .second-line {
-        width: 2px;
-        height: 100px;
-        top: 25px;
-      }
+        /* =================================
+           BAGIAN CSS
+           ================================= */
+        
+        /* --- Variabel Warna Default (Light Mode) --- */
+        :root {
+            --warna-utama: #007bff;
+            --warna-sekunder: #6c757d;
+            --warna-latar: #f8f9fa;
+            --warna-kartu: #ffffff;
+            --warna-teks: #212529;
+            --warna-tombol-mode: #212529;
+            --bayangan-kartu: rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Variabel Warna Dark Mode --- */
+        body.dark-mode {
+            --warna-latar: #121212;
+            --warna-kartu: #1e1e1e;
+            --warna-teks: #e0e0e0;
+            --warna-sekunder: #b0b0b0;
+            --warna-utama: #6aabff;
+            --warna-tombol-mode: #f8f9fa;
+            --bayangan-kartu: rgba(255, 255, 255, 0.05); /* Bayangan yang lebih samar */
+        }
+
+        /* --- Gaya Dasar --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--warna-latar);
+            color: var(--warna-teks);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--warna-utama);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* --- Tombol Dark Mode (Minimalis Ikon) --- */
+        #modeToggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--warna-kartu);
+            color: var(--warna-tombol-mode);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            line-height: 40px; /* Menengahkan ikon secara vertikal */
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+        }
+        
+        #modeToggle:hover {
+            transform: scale(1.1);
+        }
+
+        body.dark-mode #modeToggle {
+            background-color: var(--warna-kartu);
+            color: var(--warna-teks);
+        }
+        
+        /* --- Form Pencarian --- */
+        #pencarian {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #inputPencarian {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px 15px;
+            border: 2px solid var(--warna-utama);
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+            background-color: var(--warna-kartu);
+            color: var(--warna-teks);
+        }
+
+        /* --- Daftar Tools (Grid Responsif) --- */
+        #daftarTools {
+            display: grid;
+            /* Auto-fill membuat grid responsif: 
+               minimal 280px per kolom, menyesuaikan layar */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .tool-item {
+            background-color: var(--warna-kartu);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px var(--bayangan-kartu);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Bayangan hover tetap gelap agar menonjol */
+        }
+
+        .tool-item a {
+            padding: 20px;
+            text-decoration: none;
+            color: var(--warna-teks);
+            display: block;
+            flex-grow: 1;
+        }
+
+        .tool-item h3 {
+            color: var(--warna-utama);
+            font-size: 1.4em;
+            margin: 0 0 10px 0;
+        }
+
+        .tool-item p {
+            font-size: 0.9em;
+            color: var(--warna-sekunder);
+        }
+
+        /* --- Media Query untuk HP (Responsive Adjustment) --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            /* Di HP, tata letak grid menjadi 1 kolom penuh */
+            #daftarTools {
+                grid-template-columns: 1fr; 
+                gap: 15px;
+            }
+
+            #modeToggle {
+                top: 15px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 1em;
+                line-height: 35px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div id="clock">
-      <div class="hour-line" id="hourLine">
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-      </div>
-      <div class="minute-line" id="minuteLine">
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-      </div>
-      <div class="second-line" id="secondLine">
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-        <div class="clock_number">00</div>
-      </div>
+</head>
+<body class="light-mode">
+
+    <header>
+        <h1>Koleksi Tools</h1>
+        <p>Akses cepat ke semua alat yang sudah dibuat.</p>
+        <button id="modeToggle" title="Beralih Mode Tampilan"></button>
+    </header>
+
+    <div class="container">
+        
+        <div id="pencarian">
+            <input type="text" id="inputPencarian" placeholder="Cari nama tool...">
+        </div>
+
+        <ul id="daftarTools">
+            </ul>
+
     </div>
 
     <script>
-      function updateClock() {
-        const now = new Date();
-        const hours = now.getHours() || 12;
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
+        /* =================================
+           BAGIAN JAVASCRIPT
+           ================================= */
+        
+        // 1. DATA TOOLS
+        const toolsData = [
+            { id: 1, nama: "Capitalize", deskripsi: "Tool untuk format blog zetlyrics.", url: "https://setids.github.io/tools/capitalize/" },
+            { id: 2, nama: "Encode Calculator", deskripsi: "Menghitung bitrate yang sesuai untuk encode.", url: "https://setids.github.io/tools/encode/" },
+            { id: 3, nama: "Tugas Nova", deskripsi: "Punya Nova aja.", url: "https://script.google.com/macros/s/AKfycbzOr5Y0skmmHD7eS83XvD4nn7jo725R1ivDArVf0z22j-Zkm2x2uW9PsYHNQVfrvevW/exec" },
+            // Tambahkan tools Anda di sini!
+        ];
 
-        // Calculate angles for hour, minute, and second hands
-        const hourAngle = (hours % 12) * 30 + minutes * 0.5;
-        const minuteAngle = minutes * 6;
-        const secondAngle = seconds * 6;
+        const daftarToolsEl = document.getElementById('daftarTools');
+        const inputPencarian = document.getElementById('inputPencarian');
+        
+        // 2. LOGIKA DARK MODE & LOCAL STORAGE
+        const body = document.body;
+        const modeToggle = document.getElementById('modeToggle');
+        const localStorageKey = 'darkModeAktif';
 
-        // Rotate the lines based on the calculated angles
-        $("#hourLine")
-          .css("transform", `rotate(${hourAngle}deg)`)
-          .children(".clock_number")
-          .html(hours)
-          .css("transform", `rotate(${-hourAngle}deg)`);
-        $("#minuteLine")
-          .css("transform", `rotate(${minuteAngle}deg)`)
-          .children(".clock_number")
-          .html(minutes)
-          .css("transform", `rotate(${-minuteAngle}deg)`);
-        $("#secondLine")
-          .css("transform", `rotate(${secondAngle}deg)`)
-          .children(".clock_number")
-          .html(seconds)
-          .css("transform", `rotate(${-secondAngle}deg)`);
-      }
+        // Fungsi untuk mengaplikasikan mode dan mengganti ikon
+        function applyMode(isDark) {
+            if (isDark) {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+                modeToggle.innerHTML = '☀️'; // Ikon Matahari (untuk kembali ke Light Mode)
+                localStorage.setItem(localStorageKey, 'true');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                modeToggle.innerHTML = '🌙'; // Ikon Bulan (untuk beralih ke Dark Mode)
+                localStorage.setItem(localStorageKey, 'false');
+            }
+        }
 
-      // Update the clock every second
-      setInterval(updateClock, 1000);
+        // Inisialisasi: Cek Local Storage (Default Light Mode)
+        const savedMode = localStorage.getItem(localStorageKey);
+        
+        if (savedMode === 'true') {
+            applyMode(true); // Jika tersimpan 'true', aktifkan Dark Mode
+        } else {
+            applyMode(false); // Default Light Mode
+        }
 
-      // Initial call to display the clock immediately
-      updateClock();
+        // Event Listener Tombol Toggle
+        modeToggle.addEventListener('click', () => {
+            const isDark = body.classList.contains('dark-mode');
+            applyMode(!isDark); // Toggle mode
+        });
+
+        // 3. LOGIKA RENDER DAN PENCARIAN
+        function renderTools(tools) {
+            daftarToolsEl.innerHTML = '';
+
+            if (tools.length === 0) {
+                daftarToolsEl.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Tool tidak ditemukan. Coba kata kunci lain.</p>';
+                return;
+            }
+
+            tools.forEach(tool => {
+                const li = document.createElement('li');
+                li.className = 'tool-item';
+                li.innerHTML = `
+                    <a href="${tool.url}" target="_blank" rel="noopener noreferrer">
+                        <h3>${tool.nama}</h3>
+                        <p>${tool.deskripsi}</p>
+                    </a>
+                `;
+                daftarToolsEl.appendChild(li);
+            });
+        }
+
+        function cariTools() {
+            const kataKunci = inputPencarian.value.toLowerCase().trim();
+            
+            const hasilFilter = toolsData.filter(tool => 
+                tool.nama.toLowerCase().includes(kataKunci) ||
+                tool.deskripsi.toLowerCase().includes(kataKunci)
+            );
+            
+            renderTools(hasilFilter);
+        }
+
+        // Event Listener untuk Pencarian dan Render Awal
+        inputPencarian.addEventListener('input', cariTools);
+        renderTools(toolsData);
+
     </script>
-  </body>
+</body>
 </html>
