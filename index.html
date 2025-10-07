@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koleksi Tools</title>
+    <title>Koleksi Tools Saya - Responsif</title>
     <style>
         /* =================================
            BAGIAN CSS
@@ -28,10 +28,10 @@
             --warna-sekunder: #b0b0b0;
             --warna-utama: #6aabff;
             --warna-tombol-mode: #f8f9fa;
-            --bayangan-kartu: rgba(255, 255, 255, 0.05); /* Bayangan yang lebih samar */
+            --bayangan-kartu: rgba(255, 255, 255, 0.05);
         }
 
-        /* --- Gaya Dasar --- */
+        /* --- Gaya Dasar & Transisi --- */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -42,13 +42,18 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
+        /* Box-sizing diterapkan ke semua elemen untuk responsivitas yang lebih baik */
+        *, *::before, *::after {
+            box-sizing: border-box; 
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px; 
         }
 
-        /* --- Header --- */
+        /* --- Header & Tombol Mode --- */
         header {
             background-color: var(--warna-utama);
             color: white;
@@ -59,7 +64,6 @@
             position: relative;
         }
 
-        /* --- Tombol Dark Mode (Minimalis Ikon) --- */
         #modeToggle {
             position: absolute;
             top: 20px;
@@ -72,10 +76,11 @@
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.2em;
-            line-height: 40px; /* Menengahkan ikon secara vertikal */
+            line-height: 40px; 
             text-align: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s, color 0.3s, transform 0.2s;
+            z-index: 10; /* Pastikan tombol di atas elemen lain */
         }
         
         #modeToggle:hover {
@@ -91,6 +96,7 @@
         #pencarian {
             margin-bottom: 30px;
             text-align: center;
+            /* Padding dihilangkan dari sini karena sudah ada di .container */
         }
 
         #inputPencarian {
@@ -109,8 +115,6 @@
         /* --- Daftar Tools (Grid Responsif) --- */
         #daftarTools {
             display: grid;
-            /* Auto-fill membuat grid responsif: 
-               minimal 280px per kolom, menyesuaikan layar */
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
             gap: 20px;
             padding: 0;
@@ -125,11 +129,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-        }
-
-        .tool-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Bayangan hover tetap gelap agar menonjol */
         }
 
         .tool-item a {
@@ -154,13 +153,19 @@
         /* --- Media Query untuk HP (Responsive Adjustment) --- */
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                /* Menggunakan padding lebih kecil di HP */
+                padding: 10px; 
             }
             
-            /* Di HP, tata letak grid menjadi 1 kolom penuh */
             #daftarTools {
+                /* 1 kolom penuh di HP */
                 grid-template-columns: 1fr; 
                 gap: 15px;
+            }
+
+            #inputPencarian {
+                /* Padding internal tetap, width 100% sudah dihandle oleh box-sizing */
+                max-width: 100%; 
             }
 
             #modeToggle {
@@ -177,8 +182,8 @@
 <body class="light-mode">
 
     <header>
-        <h1>Koleksi Tools</h1>
-        <p>Akses cepat ke semua alat yang sudah dibuat.</p>
+        <h1>Koleksi Tools Saya</h1>
+        <p>Akses cepat ke semua alat yang saya miliki.</p>
         <button id="modeToggle" title="Beralih Mode Tampilan"></button>
     </header>
 
@@ -219,12 +224,12 @@
             if (isDark) {
                 body.classList.add('dark-mode');
                 body.classList.remove('light-mode');
-                modeToggle.innerHTML = '☀️'; // Ikon Matahari (untuk kembali ke Light Mode)
+                modeToggle.innerHTML = '☀️'; // Ikon Matahari untuk kembali ke Light Mode
                 localStorage.setItem(localStorageKey, 'true');
             } else {
                 body.classList.remove('dark-mode');
                 body.classList.add('light-mode');
-                modeToggle.innerHTML = '🌙'; // Ikon Bulan (untuk beralih ke Dark Mode)
+                modeToggle.innerHTML = '🌙'; // Ikon Bulan untuk beralih ke Dark Mode
                 localStorage.setItem(localStorageKey, 'false');
             }
         }
@@ -235,7 +240,7 @@
         if (savedMode === 'true') {
             applyMode(true); // Jika tersimpan 'true', aktifkan Dark Mode
         } else {
-            applyMode(false); // Default Light Mode
+            applyMode(false); // Default Light Mode (termasuk jika 'false' atau null)
         }
 
         // Event Listener Tombol Toggle
