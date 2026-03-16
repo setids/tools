@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickQR HD - Edisi Buku Saku</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/gh/ushelp/EasyQRCodeJS@master/dist/easy.qrcode.min.js"></script>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <header>
+        <h1 class="brand">Quick<span>QR</span></h1>
+        <p>Ubah URL/Teks ke QR Code HD untuk Cetakan</p>
+      </header>
+
+      <div class="card">
+        <div class="input-area">
+          <label>Input URL atau Teks</label>
+          <input
+            type="text"
+            id="text-input"
+            placeholder="Masukkan link di sini..."
+            autocomplete="off"
+          />
+
+          <div class="color-picker-group">
+            <div class="picker">
+              <label>Warna QR</label>
+              <input type="color" id="color-dark" value="#000000" />
+            </div>
+            <div class="picker">
+              <label>Warna Background</label>
+              <input type="color" id="color-light" value="#ffffff" />
+            </div>
+          </div>
+
+          <button id="generate-btn">Generate QR Code HD</button>
+        </div>
+
+        <div class="preview-area">
+          <div id="qrcode-wrapper">
+            <div id="qrcode"></div>
+            <p id="placeholder">Hasil QR Code</p>
+          </div>
+          <button id="download-btn" class="dl-btn" style="display: none">
+            Simpan PNG (High Res)
+          </button>
+        </div>
+      </div>
+
+      <footer>
+        <p>Optimized for Pocket Book Printing &copy; 2026</p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
