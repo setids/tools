@@ -1,33 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bitrate Calculator</title>
-    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
-  <body>
-    <div class="container">
-      <h2>Video Bitrate Calculator</h2>
-      <label for="fileSize">File Size (in MB):</label>
-      <input
-        type="number"
-        id="fileSize"
-        placeholder="Enter file size in MB (e.g., 97 or 97.2)"
-        step="0.01"
-      />
+  <body
+    class="bg-slate-50 text-slate-900 min-h-screen flex items-center justify-center p-4"
+  >
+    <div
+      class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-slate-100"
+    >
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-blue-600">FFmpeg Generator</h2>
+        <p class="text-slate-500 text-sm">
+          Hitung bitrate dan pilih preset kompresi.
+        </p>
+      </div>
 
-      <label for="duration">Duration:</label>
-      <input
-        type="text"
-        id="duration"
-        placeholder="Enter duration (e.g., 4:20 for 4 minutes 20 seconds)"
-      />
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1"
+            >Target File Size (MB)</label
+          >
+          <input
+            type="number"
+            id="fileSize"
+            placeholder="Contoh: 97.2"
+            step="0.01"
+            class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+          />
+        </div>
 
-      <button onclick="calculateBitrate()">Calculate Maximum Bitrate</button>
+        <div>
+          <label class="block text-sm font-semibold mb-1"
+            >Duration (mm:ss)</label
+          >
+          <input
+            type="text"
+            id="duration"
+            placeholder="Contoh: 04:20"
+            class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+          />
+        </div>
 
-      <div id="result" class="result" style="display: none"></div>
+        <!-- Preset Selection -->
+        <div>
+          <label class="block text-sm font-semibold mb-1"
+            >Encoding Preset</label
+          >
+          <select
+            id="presetSelect"
+            class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white transition-all"
+          >
+            <option value="ultrafast">Ultrafast</option>
+            <option value="superfast">Superfast</option>
+            <option value="veryfast">Veryfast</option>
+            <option value="faster">Faster</option>
+            <option value="fast">Fast</option>
+            <option value="medium">Medium (Standard)</option>
+            <option value="slow" selected>Slow (Recommended)</option>
+            <option value="slower">Slower</option>
+            <option value="veryslow">Veryslow</option>
+          </select>
+          <!-- Catatan Preset -->
+          <p
+            id="presetNote"
+            class="mt-2 text-[11px] text-slate-500 italic bg-slate-50 p-2 rounded border border-slate-100 uppercase tracking-tight"
+          >
+            Slow: Hasil terbaik untuk diunggah ke media sosial.
+          </p>
+        </div>
+
+        <button
+          id="generateBtn"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
+          <i data-lucide="calculator" class="w-5 h-5"></i> Generate Command
+        </button>
+      </div>
+
+      <!-- Result Area -->
+      <div id="outputArea" class="mt-8 hidden space-y-4 transition-all">
+        <div
+          class="p-4 bg-blue-50 rounded-lg border border-blue-100 text-center"
+        >
+          <p
+            class="text-xs text-blue-600 font-bold uppercase tracking-wider mb-1"
+          >
+            Maximum Bitrate
+          </p>
+          <p
+            id="bitrateDisplay"
+            class="text-xl font-mono font-bold text-blue-800"
+          >
+            0 kbps
+          </p>
+        </div>
+
+        <div class="relative">
+          <label class="block text-sm font-semibold mb-2"
+            >FFmpeg Command:</label
+          >
+          <textarea
+            id="commandResult"
+            readonly
+            class="w-full h-32 p-3 text-sm font-mono bg-slate-900 text-slate-200 rounded-lg border-none focus:ring-0 resize-none shadow-inner"
+          ></textarea>
+
+          <button
+            id="copyBtn"
+            class="absolute bottom-3 right-3 bg-white/10 hover:bg-white/20 text-white p-2 rounded-md transition-all flex items-center gap-2 text-xs border border-white/20"
+          >
+            <i data-lucide="copy" class="w-4 h-4"></i> Copy
+          </button>
+        </div>
+        <p
+          id="copyStatus"
+          class="text-center text-xs text-green-600 font-medium opacity-0 transition-opacity"
+        >
+          Berhasil disalin!
+        </p>
+      </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>

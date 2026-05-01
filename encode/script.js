@@ -1,11 +1,43 @@
-function calculateBitrate() {
-  // Get inputs
-  const fileSizeMB = parseFloat(document.getElementById("fileSize").value);
-  const duration = document.getElementById("duration").value;
+lucide.createIcons();
 
-  // Validate inputs
+const generateBtn = document.getElementById("generateBtn");
+const copyBtn = document.getElementById("copyBtn");
+const fileSizeInput = document.getElementById("fileSize");
+const durationInput = document.getElementById("duration");
+const presetSelect = document.getElementById("presetSelect");
+const presetNote = document.getElementById("presetNote");
+const outputArea = document.getElementById("outputArea");
+const bitrateDisplay = document.getElementById("bitrateDisplay");
+const commandResult = document.getElementById("commandResult");
+const copyStatus = document.getElementById("copyStatus");
+
+// Data Catatan Preset
+const presetNotes = {
+  ultrafast:
+    "Proses secepat kilat, tapi kualitas paling rendah & file paling bengkak.",
+  superfast: "Sangat cepat, cocok untuk testing encoding saja.",
+  veryfast: "Pilihan bagus jika kamu sedang terburu-buru (ngejar deadline).",
+  faster: "Sedikit lebih efisien dibanding veryfast.",
+  fast: "Keseimbangan yang cukup oke antara waktu dan kualitas.",
+  medium: "Bawaan standar FFmpeg. Hasil seimbang untuk penggunaan umum.",
+  slow: "Hasil terbaik untuk diunggah ke media sosial (efisien & tajam).",
+  slower: "Sangat lambat, khusus untuk arsip video kualitas tinggi.",
+  veryslow: "Efisiensi maksimal, tapi butuh waktu sangat lama untuk diproses.",
+};
+
+// Update Catatan Saat Preset Diganti
+presetSelect.addEventListener("change", () => {
+  presetNote.innerText = `${presetSelect.value.toUpperCase()}: ${presetNotes[presetSelect.value]}`;
+});
+
+// Logic Perhitungan
+generateBtn.addEventListener("click", () => {
+  const fileSizeMB = parseFloat(fileSizeInput.value);
+  const duration = durationInput.value;
+  const selectedPreset = presetSelect.value;
+
   if (isNaN(fileSizeMB) || fileSizeMB <= 0) {
-    alert("Please enter a valid file size in MB.");
+    alert("Masukkan ukuran file yang valid.");
     return;
   }
 
@@ -15,32 +47,42 @@ function calculateBitrate() {
     isNaN(durationParts[0]) ||
     isNaN(durationParts[1])
   ) {
-    alert("Please enter a valid duration in the format mm:ss.");
+    alert("Gunakan format mm:ss.");
     return;
   }
 
-  // Convert file size to bytes and duration to seconds
-  const fileSizeBytes = fileSizeMB * 1024 * 1024; // Convert MB to bytes
+  const fileSizeBytes = fileSizeMB * 1024 * 1024;
   const durationSeconds =
-    parseInt(durationParts[0], 10) * 60 + parseInt(durationParts[1], 10); // Convert mm:ss to seconds
+    parseInt(durationParts[0], 10) * 60 + parseInt(durationParts[1], 10);
 
   if (durationSeconds <= 0) {
-    alert("Please enter a valid duration greater than 0.");
+    alert("Durasi tidak boleh nol.");
     return;
   }
 
-  // Calculate maximum bitrate
-  const bitrateBps = Math.floor((fileSizeBytes * 8) / durationSeconds); // Bitrate in bits per second (floor ensures no decimal)
-  const bitrateKbps = Math.floor(bitrateBps / 1000); // Convert to kilobits per second and floor it
+  const bitrateBps = Math.floor((fileSizeBytes * 8) / durationSeconds);
+  const bitrateKbps = Math.floor(bitrateBps / 1000);
 
-  // Display result
-  const resultDiv = document.getElementById("result");
-  resultDiv.style.display = "block";
-  resultDiv.innerHTML = `Maximum Bitrate: <strong>${bitrateKbps} kbps</strong>`;
+  outputArea.classList.remove("hidden");
+  bitrateDisplay.innerText = `${bitrateKbps} kbps`;
 
-  // Generate ffmpeg command
-  const ffmpegCommand = `ffmpeg -i sotsu.mp4 -vf "subtitles=sotsu.ass" -an -c:v libx264 -b:v ${bitrateKbps}k -preset slow upload.mp4`;
-  const commandDiv = document.getElementById("command");
-  commandDiv.style.display = "block";
-  commandDiv.innerHTML = `<strong>FFmpeg Command:</strong><br><textarea readonly style="width: 100%; height: 60px;">${ffmpegCommand}</textarea>`;
-}
+  // Pasang bitrate dan preset yang dipilih ke dalam command[cite: 3]
+  const command = `ffmpeg -i new.mp4 -vf "subtitles=new.ass" -c:a aac -b:a 128k -c:v libx264 -b:v ${bitrateKbps}k -preset ${selectedPreset} final.mp4`;
+  commandResult.value = command;
+});
+
+// Copy Button Logic
+copyBtn.addEventListener("click", async () => {
+  const textToCopy = commandResult.value;
+  if (!textToCopy) return;
+
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    copyStatus.style.opacity = "1";
+    setTimeout(() => {
+      copyStatus.style.opacity = "0";
+    }, 2000);
+  } catch (err) {
+    console.error("Gagal menyalin: ", err);
+  }
+});
