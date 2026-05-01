@@ -1,0 +1,11 @@
+/* Transisi halus saat ganti tema */
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Transisi tambahan untuk elemen kartu jika diperlukan */
+.group {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}

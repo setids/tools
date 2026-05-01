@@ -1,326 +1,162 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Koleksi Tools Saya - Responsif</title>
-    <style>
-      /* =================================
-           BAGIAN CSS
-           ================================= */
-
-      /* --- Variabel Warna Default (Light Mode) --- */
-      :root {
-        --warna-utama: #007bff;
-        --warna-sekunder: #6c757d;
-        --warna-latar: #f8f9fa;
-        --warna-kartu: #ffffff;
-        --warna-teks: #212529;
-        --warna-tombol-mode: #212529;
-        --bayangan-kartu: rgba(0, 0, 0, 0.1);
-      }
-
-      /* --- Variabel Warna Dark Mode --- */
-      body.dark-mode {
-        --warna-latar: #121212;
-        --warna-kartu: #1e1e1e;
-        --warna-teks: #e0e0e0;
-        --warna-sekunder: #b0b0b0;
-        --warna-utama: #6aabff;
-        --warna-tombol-mode: #f8f9fa;
-        --bayangan-kartu: rgba(255, 255, 255, 0.05);
-      }
-
-      /* --- Gaya Dasar & Transisi --- */
-      body {
-        font-family: "Arial", sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: var(--warna-latar);
-        color: var(--warna-teks);
-        line-height: 1.6;
-        transition:
-          background-color 0.3s,
-          color 0.3s;
-      }
-
-      /* Box-sizing diterapkan ke semua elemen untuk responsivitas yang lebih baik */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-
-      /* --- Header & Tombol Mode --- */
-      header {
-        background-color: var(--warna-utama);
-        color: white;
-        padding: 20px 0;
-        text-align: center;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        position: relative;
-      }
-
-      #modeToggle {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: var(--warna-kartu);
-        color: var(--warna-tombol-mode);
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.2em;
-        line-height: 40px;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        transition:
-          background-color 0.3s,
-          color 0.3s,
-          transform 0.2s;
-        z-index: 10; /* Pastikan tombol di atas elemen lain */
-      }
-
-      #modeToggle:hover {
-        transform: scale(1.1);
-      }
-
-      body.dark-mode #modeToggle {
-        background-color: var(--warna-kartu);
-        color: var(--warna-teks);
-      }
-
-      /* --- Form Pencarian --- */
-      #pencarian {
-        margin-bottom: 30px;
-        text-align: center;
-        /* Padding dihilangkan dari sini karena sudah ada di .container */
-      }
-
-      #inputPencarian {
-        width: 100%;
-        max-width: 500px;
-        padding: 10px 15px;
-        border: 2px solid var(--warna-utama);
-        border-radius: 25px;
-        font-size: 1em;
-        outline: none;
-        transition:
-          border-color 0.3s,
-          background-color 0.3s,
-          color 0.3s;
-        background-color: var(--warna-kartu);
-        color: var(--warna-teks);
-      }
-
-      /* --- Daftar Tools (Grid Responsif) --- */
-      #daftarTools {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-        padding: 0;
-        list-style: none;
-      }
-
-      .tool-item {
-        background-color: var(--warna-kartu);
-        border-radius: 10px;
-        box-shadow: 0 4px 8px var(--bayangan-kartu);
-        transition:
-          transform 0.3s,
-          box-shadow 0.3s,
-          background-color 0.3s;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-      .tool-item a {
-        padding: 20px;
-        text-decoration: none;
-        color: var(--warna-teks);
-        display: block;
-        flex-grow: 1;
-      }
-
-      .tool-item h3 {
-        color: var(--warna-utama);
-        font-size: 1.4em;
-        margin: 0 0 10px 0;
-      }
-
-      .tool-item p {
-        font-size: 0.9em;
-        color: var(--warna-sekunder);
-      }
-
-      /* --- Media Query untuk HP (Responsive Adjustment) --- */
-      @media (max-width: 768px) {
-        .container {
-          /* Menggunakan padding lebih kecil di HP */
-          padding: 10px;
-        }
-
-        #daftarTools {
-          /* 1 kolom penuh di HP */
-          grid-template-columns: 1fr;
-          gap: 15px;
-        }
-
-        #inputPencarian {
-          /* Padding internal tetap, width 100% sudah dihandle oleh box-sizing */
-          max-width: 100%;
-        }
-
-        #modeToggle {
-          top: 15px;
-          right: 10px;
-          width: 35px;
-          height: 35px;
-          font-size: 1em;
-          line-height: 35px;
-        }
-      }
-    </style>
+    <title>Toolbox Saya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#3b82f6",
+              darkBg: "#0f172a",
+              darkCard: "#1e293b",
+            },
+          },
+        },
+      };
+    </script>
   </head>
-  <body class="light-mode">
-    <header>
-      <h1>Koleksi Tools Saya</h1>
-      <p>Akses cepat ke semua alat yang saya miliki.</p>
-      <button id="modeToggle" title="Beralih Mode Tampilan"></button>
+  <body
+    class="bg-slate-50 text-slate-900 dark:bg-darkBg dark:text-slate-100 min-h-screen"
+  >
+    <header
+      class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-darkBg/70 border-b border-slate-200 dark:border-slate-800"
+    >
+      <div
+        class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <h1 class="text-xl font-bold tracking-tight uppercase">
+          Personal<span class="text-primary">Tools</span>
+        </h1>
+
+        <div class="relative inline-block text-left">
+          <button
+            id="theme-menu-button"
+            class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:ring-2 ring-primary transition-all"
+          >
+            <span id="current-theme-icon">🌓</span>
+          </button>
+
+          <div
+            id="theme-options"
+            class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-white dark:bg-darkCard shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden text-xs font-semibold uppercase"
+          >
+            <button
+              onclick="setTheme('light')"
+              class="w-full px-4 py-3 text-left hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              ☀️ Light
+            </button>
+            <button
+              onclick="setTheme('dark')"
+              class="w-full px-4 py-3 text-left hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              🌙 Dark
+            </button>
+            <button
+              onclick="setTheme('system')"
+              class="w-full px-4 py-3 text-left hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              💻 System
+            </button>
+          </div>
+        </div>
+      </div>
     </header>
 
-    <div class="container">
-      <div id="pencarian">
-        <input
-          type="text"
-          id="inputPencarian"
-          placeholder="Cari nama tool..."
-        />
+    <main class="max-w-4xl mx-auto px-4 py-12">
+      <section class="mb-12">
+        <h2 class="text-3xl font-extrabold mb-4">Daftar Alat</h2>
+        <p class="text-slate-600 dark:text-slate-400 max-w-lg">
+          Kumpulan alat fungsional untuk produktivitas harian dan optimasi
+          konten.
+        </p>
+      </section>
+
+      <!-- Link List dengan Class Tailwind Langsung -->
+      <div class="grid gap-4 md:grid-cols-2">
+        <a
+          href="https://setids.github.io/tools/capitalize/"
+          class="p-6 rounded-2xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-lg active:scale-[0.98] block group"
+        >
+          <h3
+            class="font-bold text-lg group-hover:text-primary transition-colors uppercase"
+          >
+            Capitalize
+          </h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Format teks otomatis khusus untuk kebutuhan blog Zetlyrics agar
+            lebih rapi.
+          </p>
+        </a>
+
+        <a
+          href="https://setids.github.io/tools/encode/"
+          class="p-6 rounded-2xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-lg active:scale-[0.98] block group"
+        >
+          <h3
+            class="font-bold text-lg group-hover:text-primary transition-colors uppercase"
+          >
+            Encode Calculator
+          </h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Hitung bitrate yang paling sesuai sebelum melakukan proses encoding
+            video.
+          </p>
+        </a>
+
+        <a
+          href="https://lognova.blogspot.com/"
+          class="p-6 rounded-2xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-lg active:scale-[0.98] block group"
+        >
+          <h3
+            class="font-bold text-lg group-hover:text-primary transition-colors uppercase"
+          >
+            Tugas Nova
+          </h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Pusat penyimpanan dan manajemen khusus untuk tugas-tugas Nova.
+          </p>
+        </a>
+
+        <a
+          href="https://setids.github.io/tools/qr-code/"
+          class="p-6 rounded-2xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-lg active:scale-[0.98] block group"
+        >
+          <h3
+            class="font-bold text-lg group-hover:text-primary transition-colors uppercase"
+          >
+            QR Code
+          </h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Alat bantu untuk generate kode QR secara instan dari link atau teks.
+          </p>
+        </a>
+
+        <a
+          href="https://setids.github.io/tools/bensin/"
+          class="p-6 rounded-2xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-lg active:scale-[0.98] block group md:col-span-2"
+        >
+          <h3 class="font-bold text-lg text-primary uppercase">Bensin</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Kalkulator untuk menghitung estimasi konsumsi dan biaya bahan bakar
+            kendaraan.
+          </p>
+        </a>
       </div>
+    </main>
 
-      <ul id="daftarTools"></ul>
-    </div>
+    <footer
+      class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center text-sm text-slate-500 font-medium"
+    >
+      <p>&copy; 2026 Developer Tools Dashboard</p>
+    </footer>
 
-    <script>
-      /* =================================
-           BAGIAN JAVASCRIPT
-           ================================= */
-
-      // 1. DATA TOOLS
-      const toolsData = [
-        {
-          id: 1,
-          nama: "Capitalize",
-          deskripsi: "Tool untuk format blog zetlyrics.",
-          url: "https://setids.github.io/tools/capitalize/",
-        },
-        {
-          id: 2,
-          nama: "Encode Calculator",
-          deskripsi: "Menghitung bitrate yang sesuai untuk encode.",
-          url: "https://setids.github.io/tools/encode/",
-        },
-        {
-          id: 3,
-          nama: "Tugas Nova",
-          deskripsi: "Punya Nova aja.",
-          url: "https://lognova.blogspot.com/",
-        },
-        {
-          id: 4,
-          nama: "Bensin",
-          deskripsi: "Kalkulator Bensin.",
-          url: "https://setids.github.io/tools/bensin/",
-        },
-        // Tambahkan tools Anda di sini!
-      ];
-
-      const daftarToolsEl = document.getElementById("daftarTools");
-      const inputPencarian = document.getElementById("inputPencarian");
-
-      // 2. LOGIKA DARK MODE & LOCAL STORAGE
-      const body = document.body;
-      const modeToggle = document.getElementById("modeToggle");
-      const localStorageKey = "darkModeAktif";
-
-      // Fungsi untuk mengaplikasikan mode dan mengganti ikon
-      function applyMode(isDark) {
-        if (isDark) {
-          body.classList.add("dark-mode");
-          body.classList.remove("light-mode");
-          modeToggle.innerHTML = "☀️"; // Ikon Matahari untuk kembali ke Light Mode
-          localStorage.setItem(localStorageKey, "true");
-        } else {
-          body.classList.remove("dark-mode");
-          body.classList.add("light-mode");
-          modeToggle.innerHTML = "🌙"; // Ikon Bulan untuk beralih ke Dark Mode
-          localStorage.setItem(localStorageKey, "false");
-        }
-      }
-
-      // Inisialisasi: Cek Local Storage (Default Light Mode)
-      const savedMode = localStorage.getItem(localStorageKey);
-
-      if (savedMode === "true") {
-        applyMode(true); // Jika tersimpan 'true', aktifkan Dark Mode
-      } else {
-        applyMode(false); // Default Light Mode (termasuk jika 'false' atau null)
-      }
-
-      // Event Listener Tombol Toggle
-      modeToggle.addEventListener("click", () => {
-        const isDark = body.classList.contains("dark-mode");
-        applyMode(!isDark); // Toggle mode
-      });
-
-      // 3. LOGIKA RENDER DAN PENCARIAN
-      function renderTools(tools) {
-        daftarToolsEl.innerHTML = "";
-
-        if (tools.length === 0) {
-          daftarToolsEl.innerHTML =
-            '<p style="text-align: center; grid-column: 1 / -1;">Tool tidak ditemukan. Coba kata kunci lain.</p>';
-          return;
-        }
-
-        tools.forEach((tool) => {
-          const li = document.createElement("li");
-          li.className = "tool-item";
-          li.innerHTML = `
-                    <a href="${tool.url}" target="_blank" rel="noopener noreferrer">
-                        <h3>${tool.nama}</h3>
-                        <p>${tool.deskripsi}</p>
-                    </a>
-                `;
-          daftarToolsEl.appendChild(li);
-        });
-      }
-
-      function cariTools() {
-        const kataKunci = inputPencarian.value.toLowerCase().trim();
-
-        const hasilFilter = toolsData.filter(
-          (tool) =>
-            tool.nama.toLowerCase().includes(kataKunci) ||
-            tool.deskripsi.toLowerCase().includes(kataKunci),
-        );
-
-        renderTools(hasilFilter);
-      }
-
-      // Event Listener untuk Pencarian dan Render Awal
-      inputPencarian.addEventListener("input", cariTools);
-      renderTools(toolsData);
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
