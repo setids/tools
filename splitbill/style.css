@@ -1,0 +1,23 @@
+/* Menghilangkan spin button pada input number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body {
+  background-image: radial-gradient(#2d3436 1px, transparent 0);
+  background-size: 24px 24px; /* Dot pattern background */
+}
+
+/* Efek klik pada tombol */
+button:active {
+  box-shadow: none;
+  transform: translateY(4px);
+}
+
+/* Custom focus ring */
+input:focus {
+  border-color: #6c5ce7;
+  box-shadow: 4px 4px 0px #2d3436;
+}
