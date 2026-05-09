@@ -24,6 +24,8 @@
           >
           <input
             type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
             id="hargaAsli"
             oninput="formatInput(this)"
             class="w-full mt-1 p-3 border-2 border-gray-800 focus:outline-none focus:bg-yellow-50 transition-colors"
@@ -36,7 +38,9 @@
             >Persentase Diskon (%)</label
           >
           <input
-            type="number"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
             id="persenDiskon"
             class="w-full mt-1 p-3 border-2 border-gray-800 focus:outline-none focus:bg-yellow-50 transition-colors"
             placeholder="Contoh: 20"
