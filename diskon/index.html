@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalkulator Diskon Flat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div
+      class="bg-white p-8 rounded-none shadow-[10px_10px_0px_0px_rgba(0,0,0,0.1)] w-full max-w-md border-2 border-gray-800"
+    >
+      <h1
+        class="text-2xl font-bold text-gray-800 mb-6 uppercase tracking-wider"
+      >
+        Kalkulator Diskon
+      </h1>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-600 uppercase"
+            >Harga Asli (Rp)</label
+          >
+          <input
+            type="text"
+            id="hargaAsli"
+            oninput="formatInput(this)"
+            class="w-full mt-1 p-3 border-2 border-gray-800 focus:outline-none focus:bg-yellow-50 transition-colors"
+            placeholder="Contoh: 150.000"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-600 uppercase"
+            >Persentase Diskon (%)</label
+          >
+          <input
+            type="number"
+            id="persenDiskon"
+            class="w-full mt-1 p-3 border-2 border-gray-800 focus:outline-none focus:bg-yellow-50 transition-colors"
+            placeholder="Contoh: 20"
+          />
+        </div>
+
+        <button
+          onclick="hitungDiskon()"
+          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 border-b-4 border-blue-800 active:border-b-0 active:mt-1 transition-all uppercase"
+        >
+          Hitung Sekarang
+        </button>
+      </div>
+
+      <div
+        id="hasilArea"
+        class="mt-8 pt-6 border-t-2 border-dashed border-gray-300 hidden"
+      >
+        <div class="flex justify-between mb-2">
+          <span class="text-gray-600">Hemat:</span>
+          <span id="totalHemat" class="font-bold text-green-600">Rp 0</span>
+        </div>
+        <div class="flex justify-between text-xl">
+          <span class="font-bold text-gray-800">Harga Akhir:</span>
+          <span id="hargaAkhir" class="font-black text-blue-600">Rp 0</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

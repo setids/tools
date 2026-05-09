@@ -1,0 +1,14 @@
+/* Menghilangkan spin button pada input number untuk tampilan lebih bersih */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
