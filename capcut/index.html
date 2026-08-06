@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to SRT</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 650px; margin: 50px auto; padding: 20px; text-align: center; color: #333; background-color: #f8f9fa; }
+        h2 { color: #222; margin-bottom: 5px; }
+        .desc { color: #666; margin-bottom: 25px; font-size: 14px; }
+        .box { border: 2px dashed #007bff; padding: 40px 20px; border-radius: 12px; cursor: pointer; background: #fff; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .box:hover { border-color: #0056b3; background: #f0f7ff; transform: translateY(-2px); }
+        .box p { margin: 0; font-size: 16px; color: #444; }
+        .box strong { color: #007bff; }
+        button { margin-top: 25px; padding: 12px 30px; background: #28a745; color: white; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button:hover { background: #218838; }
+        button:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+        #errorLog { color: #dc3545; margin-top: 15px; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>CapCut PC v6+ Subtitle Konverter</h2>
+    <p class="desc">Perbaikan otomatis untuk membersihkan kode bergaya JSON pada versi CapCut terbaru.</p>
+    
+    <div class="box" onclick="document.getElementById('fileInput').click()">
+        <p id="statusText">Klik di sini atau drop file <strong>draft_content.json</strong> Anda</p>
+        <input type="file" id="fileInput" accept=".json" style="display:none" onchange="prosesFile(this.files)">
+    </div>
+
+    <div id="errorLog"></div>
+    <button id="downloadBtn" disabled onclick="unduhSRT()">Unduh Subtitle (.SRT)</button>
+
+    <script>
+        let hasilSRT = "";
+
+        // Fungsi mengubah mikrodetik dari CapCut menjadi format waktu standar SRT (00:00:00,000)
+        function formatWaktu(mikrodetik) {
+            let totalDetik = mikrodetik / 1000000;
+            let jam = Math.floor(totalDetik / 3600);
+            let menit = Math.floor((totalDetik % 3600) / 60);
+            let detik = Math.floor(totalDetik % 60);
+            let milidetik = Math.floor((totalDetik % 1) * 1000);
+
+            let j = String(jam).padStart(2, '0');
+            let m = String(menit).padStart(2, '0');
+            let d = String(detik).padStart(2, '0');
+            let ms = String(milidetik).padStart(2, '0').slice(0, 3);
+
+            return `${j}:${m}:${d},${ms}`;
+        }
+
+        function prosesFile(files) {
+            if (files.length === 0) return;
+            let file = files[0];
+            let reader = new FileReader();
+
+            document.getElementById('statusText').innerHTML = "Memproses file: <strong>" + file.name + "</strong>";
+            document.getElementById('errorLog').innerText = "";
+            document.getElementById('downloadBtn').disabled = true;
+
+            reader.onload = function(e) {
+                try {
+                    let data = JSON.parse(e.target.result);
+                    let petaTeks = {};
+                    let texts = data.materials?.texts || [];
+                    
+                    // 1. Proses Pembacaan Teks Baru (Membongkar Struktur JSON Ganda)
+                    texts.forEach(item => {
+                        let isiMentah = item.content;
+                        
+                        try {
+                            // Mencoba membaca konten sebagai objek JSON (Format CapCut Terbaru v6)
+                            let objekKonten = JSON.parse(isiMentah);
+                            petaTeks[item.id] = objekKonten.text || "";
+                        } catch (err) {
+                            // Jika gagal, berarti format CapCut versi lama (Gunakan pembersihan regex biasa)
+                            let teksBersih = isiMentah.replace(/<[^>]*>/g, '');
+                            petaTeks[item.id] = teksBersih;
+                        }
+                    });
+
+                    // 2. Memasangkan teks bersih ke penanda waktu timeline
+                    let barisSRT = [];
+                    let indeks = 1;
+                    let tracks = data.tracks || [];
+
+                    tracks.forEach(track => {
+                        if (track.type === "text") {
+                            let segments = track.segments || [];
+                            segments.forEach(segment => {
+                                let matId = segment.material_id;
+                                if (petaTeks[matId]) {
+                                    let start = segment.target_timerange.start;
+                                    let duration = segment.target_timerange.duration;
+                                    let end = start + duration;
+
+                                    barisSRT.push(indeks);
+                                    barisSRT.push(`${formatWaktu(start)} --> ${formatWaktu(end)}`);
+                                    barisSRT.push(petaTeks[matId]);
+                                    barisSRT.push(""); // Spasi baris kosong standar SRT
+                                    indeks++;
+                                }
+                            });
+                        }
+                    });
+
+                    // 3. Validasi hasil akhir
+                    if (barisSRT.length > 0) {
+                        hasilSRT = barisSRT.join("\n");
+                        document.getElementById('statusText').innerHTML = "✨ <strong>Konversi Berhasil!</strong> File siap diunduh.";
+                        document.getElementById('downloadBtn').disabled = false;
+                    } else {
+                        document.getElementById('errorLog').innerText = "Zonk! Tidak ditemukan data track teks/caption di dalam file ini.";
+                        document.getElementById('statusText').innerHTML = "Klik di sini untuk mencoba file lain.";
+                    }
+
+                } catch (error) {
+                    document.getElementById('errorLog').innerText = "Gagal memproses file! Pastikan file benar-earth draft_content.json yang asli.";
+                    document.getElementById('statusText').innerHTML = "Klik di sini untuk mencoba file lain.";
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        // Fungsi mengunduh string teks menjadi file .srt nyata di browser
+        function unduhSRT() {
+            let blob = new Blob([hasilSRT], { type: "text/plain;charset=utf-8" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "caption.srt";
+            link.click();
+        }
+    </script>
+</body>
+</html>
